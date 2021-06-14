@@ -28,9 +28,6 @@ public class Demand {
     @Column(name = "total_value", nullable = false)
     private BigDecimal totalValue;
     private double discount;
-    @OneToMany(mappedBy = "demand", cascade = CascadeType.REMOVE)
-    private List<DemandItens> demandItens;
-
 
     public Demand() {
     }
@@ -43,25 +40,6 @@ public class Demand {
         this.situation = situation;
         this.totalValue = totalValue;
         this.discount = discount;
-    }
-
-    public Demand(Long id, Client client, Address address, LocalDate date, SituationEnum situation, BigDecimal totalValue, double discount, List<DemandItens> demandItens) {
-        this.id = id;
-        this.client = client;
-        this.address = address;
-        this.date = date;
-        this.situation = situation;
-        this.totalValue = totalValue;
-        this.discount = discount;
-        this.demandItens = demandItens;
-    }
-
-    public List<DemandItens> getDemandItens() {
-        return demandItens;
-    }
-
-    public void setDemandItens(List<DemandItens> demandItens) {
-        this.demandItens = demandItens;
     }
 
     public Long getId() {

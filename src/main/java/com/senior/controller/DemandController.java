@@ -1,6 +1,8 @@
 package com.senior.controller;
 
+import com.senior.dto.AddressDTO;
 import com.senior.dto.DemandDTO;
+import com.senior.dto.DemandItensDTO;
 import com.senior.model.Address;
 import com.senior.model.Client;
 import com.senior.model.Demand;
@@ -29,40 +31,19 @@ public class DemandController {
     AddressService addressService;
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<DemandDTO> findById(@PathVariable(value="id") Long id) {
+    public ResponseEntity<Demand> findById(@PathVariable(value="id") Long id) {
 
         ModelMapper modelMapper = new ModelMapper();
 
         Demand demand = demandService.findDemandId(id);
 
-        DemandDTO demandDTO = modelMapper.map(demand,DemandDTO.class);
-
-        return ResponseEntity.ok().body(demandDTO);
+        return ResponseEntity.ok().body(demand);
     }
-//    @GetMapping
-//    public ResponseEntity<List<Demand>> findAll() {
-//        List<Demand> demands = demandService.findAllDemand();
-//        return new ResponseEntity<>(demands, HttpStatus.OK);
-//    }
-    @PostMapping
-    public ResponseEntity<Demand> add(@RequestBody DemandDTO demandDTO) {
-        Demand demand = new Demand();
-        Long addressId = new Long(demandDTO.getAddress());
-        Long clientId = new Long(demandDTO.getClient());
-        Client client = clientService.findClientById(clientId);
-        Address address = addressService.findAddressId(addressId);
-        demand.setAddress(address);
-        demand.setClient(client);
-        demand.setDate(demandDTO.getDate());
-        demand.setId(demandDTO.getId());
-        demand.setDiscount(demandDTO.getDiscount());
-        demand.setSituation(demandDTO.getSituation());
-        demand.setTotalValue(demandDTO.getTotalValue());
-        demand.setDemandItens(demandDTO.getDemandItens());
-        demandService.add(demand);
 
-        return new ResponseEntity<>(demand, HttpStatus.CREATED);
-
+    @PostMapping("/add")
+    public ResponseEntity<Demand> add(@RequestBody Demand demand) {
+        Demand newDemand = demandService.add(demand);
+        return new ResponseEntity<>(newDemand, HttpStatus.CREATED);
     }
     @PutMapping("/{id}")
     public ResponseEntity<DemandDTO> update(@PathVariable Long id, @RequestBody Demand demand){

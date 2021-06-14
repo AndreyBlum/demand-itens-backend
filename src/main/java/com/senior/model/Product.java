@@ -3,6 +3,7 @@ package com.senior.model;
 import com.senior.utils.StatusEnum;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity(name = "product")
 public class Product {
@@ -97,4 +98,16 @@ public class Product {
         this.status = status;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Double.compare(product.unitaryValue, unitaryValue) == 0 && code == product.code && totalAmount == product.totalAmount && Objects.equals(id, product.id) && Objects.equals(description, product.description) && Objects.equals(unitOfmeasurement, product.unitOfmeasurement) && status == product.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, description, unitOfmeasurement, unitaryValue, code, totalAmount, status);
+    }
 }
